@@ -1,3 +1,4 @@
+/* CSS STYLES */
 *,
 *::before,
 *::after {
@@ -11,7 +12,7 @@ body,
   margin: 0;
   padding: 0;
 }
-
+/* BODY FONT STYLES */
 body {
   font-family: sans-serif;
   background-color: #f9fbfd;
@@ -117,7 +118,7 @@ button[disabled] {
   resize: none;
   overflow: hidden;
 }
-
+/* RESPONSIVE STYLES FOR VARYING SCREEN SIZES/DEVICES */
 @media (max-width: 690px) {
   .btn {
     font-size: 1rem;

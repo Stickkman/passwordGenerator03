@@ -5,8 +5,10 @@ var passLength=128;
 var includeNumeric ="yes";
 //variable for including uppercase criteria
 var includeUpper ="yes";
-// variable for including special characters
+// variable for including special characters criteria
 var includeSpecial ="yes";
+// variable to hold generated password
+var finalPassword ="";
 
 //arrays for different criteria
 var mainArray = [];
@@ -15,18 +17,13 @@ var uppercaseArray = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O
 var numberArray = [0,1,2,3,4,5,6,7,8,9];
 var specialArray = ["!","\" ","#","$","%","&","\",","(",")","*","+",",","-",".","/","\\",":",";","<",">","=","?","@","[","]","^","_", "`", "{", "}", "|", "~"];
 
-// const lowercaseArray = baseArray(97, 122);
-// const uppercaseArray = baseArray(65, 90);
-// const numberArray = baseArray(48, 57);
-// const specialArray = baseArray(33, 47).concat(baseArray(58, 64)).concat(baseArray(91,96)).concat(baseArray(123,126));
-
-
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 //Characters from password are created with this function
 function generatePassword() {
-    console.log("function generatePassword was run");
-    askLength();
+    console.log("function generatePassword was run"); //test function started after button clicked
+    //move onto first criteria question about length
+    askLength(); 
     
 // PROMPTS FOR PASSWORD LENGTH
        function askLength() {
@@ -35,10 +32,11 @@ function generatePassword() {
        if (passLength < 8 || passLength > 128) {
            window.alert("Please make sure your choice is between 8 and 128 for security standards.");
            askLength();
-       } 
+        } 
         //Updates the length of the password
         return passLength; 
         }
+        // move onto next criteria uppercase
         askUpper();
 
 //Prompts to include Upper Cass Criteria        
@@ -50,12 +48,13 @@ function generatePassword() {
                 askUpper();
             }   
                 if (passUpper =="yes"){
-                    includeUpper="yes"; console.log("ran passupper yes, value includeupper yes");
+                    includeUpper="yes"; console.log("ran passupper yes, value includeupper yes"); // test 
                 }
                 if (passUpper =="no"){
-                    includeUpper ="no"; console.log("ran passupper no, value inclueupper no");
+                    includeUpper ="no"; console.log("ran passupper no, value inclueupper no"); // test
                 }
         } 
+        // move onto next criteria numbers
         askNumeric();
 
  //Prompts to include Numeric Criteria   
@@ -67,13 +66,14 @@ function generatePassword() {
             askNumeric();
         }
         if (passNumeric =="yes") {
-            includeNumeric = "yes"; console.log("ran passnumeric yes, value yes");
+            includeNumeric = "yes"; console.log("ran passnumeric yes, value yes"); // test
         }
         if (passNumeric =="no"){
-            includeNumeric = "no"; console.log("ran passnumeric no, value no");
+            includeNumeric = "no"; console.log("ran passnumeric no, value no"); // test
             
         } }
-        askSpecial();
+        // move onto next criteria special characters
+            askSpecial();
 //Prompts to include Special Characters Critera
     function askSpecial(passSpecial) {
         passSpecial = window.prompt("Would you like to include special characters, please enter 'yes' or 'no'", "yes");
@@ -83,18 +83,19 @@ function generatePassword() {
             askSpecial();
         }
         if (passSpecial == "yes") {
-            includeSpecial = "yes"; console.log("ran passSpecial yes, value yes");
+            includeSpecial = "yes"; console.log("ran passSpecial yes, value yes"); // test
         }
         if (passSpecial == "no") {
-            includeSpecial = "no" ; console.log("ran passSpecial no, value no");
+            includeSpecial = "no" ; console.log("ran passSpecial no, value no"); // test
         } 
 
-
-    } console.log("includeNumeric= " + includeNumeric + " includeupper=" + includeUpper + " includeSpecial= " + includeSpecial);
+    } 
+    // tests for criteria logic results
+    console.log("includeNumeric= " + includeNumeric + " includeupper=" + includeUpper + " includeSpecial= " + includeSpecial);
        
         makePass();
         //Logic for created correct array from previous criteria choices
-        function makePass() {
+            function makePass() {
             if (includeUpper =="yes" && includeNumeric =="yes" && includeSpecial == "yes") {
                 mainArray = lowercaseArray.concat(uppercaseArray, numberArray, specialArray); console.log("test y y y" + mainArray);
             }
@@ -117,20 +118,32 @@ function generatePassword() {
                 mainArray = lowercaseArray.concat(numberArray); console.log("test n y n" + mainArray);
             }
         }
-        console.log("global scope test " + mainArray);
-    
-    
-    //3 generate password
-    
-    //4 display password    
+        console.log("global scope test " + mainArray); // test scope if issues
+        
+        // call randomize function
+        randomizePass();
 
-
-
-    return "Generated Password";
+        //randomizes main array password from makePass function
+        function randomizePass() {
+            // loop for character randomization
+            for (i = 0; i <= mainArray.length; i++)
+            {
+            var randomChar = mainArray[Math.floor(Math.random()*mainArray.length)];
+            // adds random characters one by one based on desired passworld length
+            finalPassword = finalPassword += randomChar; console.log("During Loop " +  finalPassword );
+            }
+            console.log("End loop - Final Password: " + finalPassword);
+            // cut password to specificed size from criteria if issues occur, failsafe
+            finalPassword = finalPassword.slice(0, passLength);
+            console.log("End loop after slice " + finalPassword);
+            }
+                      
+     // Returns final generated password to be updated in writepassword function
+    return finalPassword;
 
 }
 
-// Write password to the #password input
+// function to display generated password on screen
 function writePassword() {
   //The function generatePassword is called and the value stored in variable 'password'  
   var password = generatePassword();
